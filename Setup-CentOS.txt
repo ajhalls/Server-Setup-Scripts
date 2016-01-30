@@ -1,0 +1,210 @@
+yum -y install nano wget net-tools NetworkManager-tui lynx java
+
+For CentOS to use PHP you need to use this: https://webtatic.com/packages/php55/
+CentOS/RHEL 6.x:
+rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
+yum install php55w php55w-opcache php55w-mcrypt php55w-mysql
+
+May have to play with SELinux
+The SELINUX=disabled option is configured in /etc/selinux/config 
+
+
+
+rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+yum -y install mysql mysql-server
+chkconfig --levels 235 mysqld on
+/etc/init.d/mysqld start
+yum -y install httpd
+chkconfig --levels 235 httpd on
+/etc/init.d/httpd start
+yum -y install php
+/etc/init.d/httpd restart
+yum -y install php-mysql
+yum -y install php-gd php-imap php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-mcrypt php-mssql php-snmp php-soap php-tidy curl curl-devel
+
+NODE
+=========================
+wget http://nodejs.org/dist/v0.10.30/node-v0.10.30.tar.gz
+tar xzvf node-v* && cd node-v*
+yum -y install gcc gcc-c++
+./configure
+make
+make install
+
+=========================
+
+Bonding Setup
+ifcfg-bond0
+===================
+DEVICE=bond0
+TYPE=bond
+BOOTPROTO=static
+ONBOOT=yes
+IPADDR=192.168.1.200
+NETWORK=192.168.1.0
+NETMASK=255.255.255.0
+BROADCAST=192.168.1.255
+GATEWAY=192.168.1.1
+USERCTL=no
+DEFROUTE=yes
+NM_CONTROLLED=no
+IPV6INIT=no
+DNS1=8.8.8.8
+
+ifcfg-em1
+===================
+HWADDR="D4:BE:D9:F3:53:24"
+DEVICETYPE="Ethernet"
+USERCTL=no
+BOOTPROTO="none"
+#IPADDR=192.168.1.50
+#NETMASK=255.255.255.0
+#GATEWAY=192.168.1.1
+NAME="em1"
+UUID="6ce4b0f4-3544-4991-a165-e7fa419c9b91"
+ONBOOT="yes"
+MASTER=bond0
+SLAVE=yes
+
+ifcfg-em2
+===================
+HWADDR=D4:BE:D9:F3:53:26
+DEVICETYPE=Ethernet
+BOOTPROTO=none
+#IPADDR=192.168.1.51
+#NETMASK=255.255.255.0
+#GATEWAY=192.168.1.1
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+
+ifcfg-em3
+===================
+HWADDR=D4:BE:D9:F3:53:28
+TYPE=Ethernet
+BOOTPROTO=none
+#IPADDR=192.168.1.52
+#NETMASK=255.255.255.0
+#GATEWAY=192.168.1.1
+DEFROUTE=yes
+PEERDNS=yes
+PEERROUTES=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_PEERDNS=yes
+IPV6_PEERROUTES=yes
+IPV6_FAILURE_FATAL=no
+NAME=em3
+UUID=1757e20c-29ed-4798-bf4d-fc4e1225cdfb
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+
+ifcfg-em4
+===================
+HWADDR=D4:BE:D9:F3:53:2A
+TYPE=Ethernet
+BOOTPROTO=none
+#IPADDR=192.168.1.53
+#NETMASK=255.255.255.0
+#GATEWAY=192.168.1.1
+DEFROUTE=yes
+PEERDNS=yes
+PEERROUTES=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_PEERDNS=yes
+IPV6_PEERROUTES=yes
+IPV6_FAILURE_FATAL=no
+NAME=em4
+UUID=4c9b29b4-5cd3-4acc-b658-bda44b4af22f
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+
+/etc/modprobe.d/bonding.conf
+======================
+alias bond0 bonding
+options bond0 mode=balance-xor miimon=100
+
+modprobe
+===============================
+Disable Firewalld
+systemctl disable firewalld
+
+Stop Firewalld
+systemctl stop firewalld
+
+Check the Status of Firewalld
+systemctl status firewalld
+firewall-cmd --zone=public --permanent --add-port=8087/tcp
+firewall-cmd --zone=public --permanent --add-port=8088/tcp
+firewall-cmd --zone=public --permanent --add-port=1945/tcp
+firewall-cmd --zone=public --permanent --add-port=443/tcp
+firewall-cmd --zone=public --add-port=8087/tcp
+firewall-cmd --zone=public --add-port=8088/tcp
+firewall-cmd --zone=public --add-port=1945/tcp
+firewall-cmd --zone=public --add-port=443/tcp
+
+Apache / MySQL Server
+firewall-cmd --zone=public --add-port=80/tcp
+firewall-cmd --zone=public --permanent --add-port=80/tcp
+firewall-cmd --zone=public --add-port=443/tcp
+firewall-cmd --zone=public --permanent --add-port=443/tcp
+
+###################CentOS 6
+ service ip6tables save
+ service ip6tables stop
+ chkconfig ip6tables off
+OR
+iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+service iptables save
+===============================
+
+Find Out Ram Speed, Make, Form Factor, Type and Other Information
+dmidecode --type memory
+
+===============================
+Find out CPU info
+cat /proc/cpuinfo
+lscpu
+===============================
+How to Get CPU Temperature Information on Linux (CentOS 6.4 /RHEL)
+
+yum install lm_sensors
+sensors-detect
+(YES to all prompt)
+to get the temperature information:-
+sensors
+
+==============================
+Benchmark Tools
+atop for CPU and Memory utilization
+iotop for Disk usage
+iftop for network traffic
+
+yum install ncurses-devel
+wget http://hisham.hm/htop/releases/1.0.3/htop-1.0.3.tar.gz
+tar xvfvz htop-1.0.3.tar.gz
+cd htop-1.0.3
+./configure
+make
+make install 
+
+
+
+ab -n 10000 -c 50 http://yoursite.com/
+This will hit your server with 10'000 requests, but not more then 50 concurrent. 
+Before starting the test, run htop on your webserver and watch the activity as 
+new processes spawn up and as the memory and CPU loads change.
+
+====Speed Test Network=====
+wget https://raw.github.com/sivel/speedtest-cli/master/speedtest_cli.py
+chmod a+rx speedtest_cli.py
+mv speedtest_cli.py /usr/local/bin/speedtest-cli
+chown root:root /usr/local/bin/speedtest-cli
+speedtest-cli 
