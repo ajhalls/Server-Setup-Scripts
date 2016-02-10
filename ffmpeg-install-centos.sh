@@ -9,7 +9,7 @@
 sudo yum -y erase ffmpeg x264 x264-devel
 
 #Get the dependencies
-sudo yum -y install autoconf automake gcc gcc-c++ git libtool make nasm pkgconfig zlib-devel
+sudo yum -y install autoconf automake gcc gcc-c++ cmake git libtool make nasm pkgconfig zlib-devel
 
 
 mkdir ~/ffmpeg_sources
@@ -96,7 +96,7 @@ sudo make install
 
 # install libvpx
 cd ~/ffmpeg_sources
-git clone --depth 1 http://git.chromium.org/webm/libvpx.git
+git clone --depth 1 https://github.com/webmproject/libvpx.git
 cd libvpx
 ./configure --prefix="$HOME/ffmpeg_build" --disable-examples
 make
@@ -107,7 +107,7 @@ make clean
 cd ~/ffmpeg_sources
 git clone --depth 1 https://github.com/georgmartius/vid.stab.git
 cd vid.stab
-./configure -DCMAKE_INSTALL_PREFIX:PATH="$HOME/ffmpeg_build"
+cmake -DCMAKE_INSTALL_PREFIX:PATH="$HOME/ffmpeg_build"
 make
 make install
 
