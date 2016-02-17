@@ -19,7 +19,7 @@ apt-get -y --force-yes install autoconf automake build-essential libass-dev libf
 
 mkdir ~/ffmpeg_sources
 
-apt-get -y install yasm libx264-dev libmp3lame-dev libopus-dev cmake mercurial
+apt-get -y install yasm libx264-dev libmp3lame-dev libopus-dev cmake mercurial git
 
 # libx265 
 cd ~/ffmpeg_sources
@@ -71,7 +71,7 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./conf
   --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
   --bindir="$HOME/bin" \
   --enable-gpl \
-  --enable-libvidstab \  
+  --enable-libvidstab \
   --enable-libass \
   --enable-libfdk-aac \
   --enable-libfreetype \
