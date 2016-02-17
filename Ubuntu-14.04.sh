@@ -51,6 +51,14 @@ PATH="$HOME/bin:$PATH" make
 make install
 make clean
 
+# install Vidstab
+cd ~/ffmpeg_sources
+git clone --depth 1 https://github.com/georgmartius/vid.stab.git
+cd vid.stab
+cmake -DCMAKE_INSTALL_PREFIX:PATH="$HOME/ffmpeg_build"
+make
+make install
+
 # FFMPEG Final Build
 cd ~/ffmpeg_sources
 wget http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
@@ -63,6 +71,7 @@ PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./conf
   --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
   --bindir="$HOME/bin" \
   --enable-gpl \
+  --enable-libvidstab \  
   --enable-libass \
   --enable-libfdk-aac \
   --enable-libfreetype \
