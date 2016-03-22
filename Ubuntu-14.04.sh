@@ -19,7 +19,16 @@ apt-get -y --force-yes install autoconf automake build-essential libass-dev libf
 
 mkdir ~/ffmpeg_sources
 
-apt-get -y install yasm libx264-dev libmp3lame-dev libopus-dev cmake mercurial git
+######
+# Edit Apt-get sources /etc/apt/sources.list
+# Add This:
+# deb http://us.archive.ubuntu.com/ubuntu/ precise multiverse
+# deb-src http://us.archive.ubuntu.com/ubuntu/ precise multiverse
+# deb http://us.archive.ubuntu.com/ubuntu/ precise-updates multiverse
+# deb-src http://us.archive.ubuntu.com/ubuntu/ precise-updates multiverse
+
+
+apt-get -y install yasm libx264-dev libmp3lame-dev libopus-dev cmake mercurial git libfaac-dev
 
 # libx265 
 cd ~/ffmpeg_sources
