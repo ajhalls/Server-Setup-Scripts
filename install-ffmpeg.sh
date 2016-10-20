@@ -73,9 +73,9 @@ make clean
 cd ~/ffmpeg_sources
 git clone https://github.com/georgmartius/vid.stab.git
 cd vid.stab
-./configure
-make -j12
-make install
+cmake .
+make
+sudo make install
 
 cd ~/ffmpeg_sources
 wget http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
