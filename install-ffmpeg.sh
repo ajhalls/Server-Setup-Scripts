@@ -104,3 +104,6 @@ PATH="$HOME/bin:$PATH" make -j12
 make install
 make distclean
 hash -r
+
+mv /root/bin/* /usr/bin
+ldconfig
