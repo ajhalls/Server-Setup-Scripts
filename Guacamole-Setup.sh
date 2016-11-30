@@ -88,7 +88,9 @@ echo "   RewriteEngine on";
 echo "   ProxyRequests off";
 echo "   ProxyPreserveHost on";
 echo "   RewriteCond %{HTTP_HOST} ^example.com(:80)?$";
-echo "   RewriteRule /(.*) http://192.168.1.25:8080/guacamole/$1 [P]";
+echo "   RewriteRule /(.*) http://ipaddress:8080/guacamole/$1 [P]";
+echo "   RewriteCond %{HTTP_HOST} ws://ipaddress[or domain](:80)?$";
+echo "   RewriteRule /(.*) ws://ipaddress:8080/guacamole/$1 [P]";
 echo "</VirtualHost>";
 
 echo -e "\n\n This would make your website available at http://example.com or  http://www.example.com";
